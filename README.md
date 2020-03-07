@@ -1,3 +1,7 @@
+# Document Tracker
+
+App for photographing and documenting receipts and documents.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
