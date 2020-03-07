@@ -1,24 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
+import Documents from './views/Documents';
+import AddDocument from './views/AddDocument';
+import View from './components/View/View';
+
+const VIEWS = {
+  ADD_DOCUMENT: 'add_document',
+  DOCUMENTS: 'documents'
+};
+
 function App() {
+  const [view, setView] = useState(VIEWS.DOCUMENTS);
+
+  const onAddDocument = () => {
+    setView(VIEWS.ADD_DOCUMENT);
+  };
+
+  const onCloseAddDocument = () => {
+    setView(VIEWS.DOCUMENTS);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-wrapper">
+      {view === VIEWS.DOCUMENTS && (
+        <View>
+          <Documents />
+          <button onClick={onAddDocument}>Add Document</button>
+        </View>
+      )}
+      {view === VIEWS.ADD_DOCUMENT && (
+        <View>
+          <button onClick={onCloseAddDocument}>Close</button>
+          <AddDocument />
+        </View>
+      )}
     </div>
   );
 }
