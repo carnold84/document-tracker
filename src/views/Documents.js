@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 import documentsService from '../services/Documents';
 
-function Documents() {
+const Documents = () => {
   const [documents, setDocuments] = useState();
 
   const onDocumentsInit = result => {
-    console.log(result)
     setDocuments(result.documents);
   };
 
