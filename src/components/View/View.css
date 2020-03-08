@@ -1,8 +1,21 @@
 .view-wrapper {
-  background-color: blueviolet;
   display: flex;
   flex-direction: column;
   height: 100%;
   position: absolute;
   width: 100%;
+}
+
+.view-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  height: 50px;
+  width: 100%;
+}
+
+.view-content {
+  background-color: blueviolet;
+  display: flex;
+  flex-grow: 1;
 }

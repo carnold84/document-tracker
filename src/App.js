@@ -4,6 +4,7 @@ import './App.css';
 import Documents from './views/Documents';
 import AddDocument from './views/AddDocument';
 import View from './components/View/View';
+import Auth from './components/Auth/Auth';
 
 const VIEWS = {
   ADD_DOCUMENT: 'add_document',
@@ -22,20 +23,31 @@ function App() {
   };
 
   return (
-    <div className="app-wrapper">
-      {view === VIEWS.DOCUMENTS && (
-        <View>
-          <Documents />
-          <button onClick={onAddDocument}>Add Document</button>
-        </View>
-      )}
-      {view === VIEWS.ADD_DOCUMENT && (
-        <View>
-          <button onClick={onCloseAddDocument}>Close</button>
-          <AddDocument />
-        </View>
-      )}
-    </div>
+    <Auth>
+      {token => {
+        console.log(token)
+        return (
+          <div className="app-wrapper">
+            {view === VIEWS.DOCUMENTS && (
+              <View
+                controls={<button onClick={onAddDocument}>Add Document</button>}
+                title={'Documents'}
+              >
+                <Documents />
+              </View>
+            )}
+            {view === VIEWS.ADD_DOCUMENT && (
+              <View
+                controls={<button onClick={onCloseAddDocument}>Close</button>}
+                title={'Add Document'}
+              >
+                <AddDocument />
+              </View>
+            )}
+          </div>
+        );
+      }}
+    </Auth>
   );
 }
 
