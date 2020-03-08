@@ -5,16 +5,17 @@ import authService from '../../services/Auth';
 const Auth = ({ children }) => {
   const [isAuthed, setIsAuthed] = useState(false);
 
-  const onAuth = result => {
+  const auth = async () => {
+    await authService.init();
     setIsAuthed(true);
   };
 
   useEffect(() => {
-    authService.init(onAuth);
+    auth();
   });
 
   if (isAuthed) {
-    return children();
+    return children;
   } else {
     return <p>Loading...</p>;
   }

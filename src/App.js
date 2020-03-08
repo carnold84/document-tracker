@@ -24,29 +24,24 @@ function App() {
 
   return (
     <Auth>
-      {token => {
-        console.log(token)
-        return (
-          <div className="app-wrapper">
-            {view === VIEWS.DOCUMENTS && (
-              <View
-                controls={<button onClick={onAddDocument}>Add Document</button>}
-                title={'Documents'}
-              >
-                <Documents />
-              </View>
-            )}
-            {view === VIEWS.ADD_DOCUMENT && (
-              <View
-                controls={<button onClick={onCloseAddDocument}>Close</button>}
-                title={'Add Document'}
-              >
-                <AddDocument />
-              </View>
-            )}
-          </div>
-        );
-      }}
+      <div className="app-wrapper">
+        {view === VIEWS.DOCUMENTS && (
+          <View
+            controls={<button onClick={onAddDocument}>Add Document</button>}
+            title={'Documents'}
+          >
+            <Documents />
+          </View>
+        )}
+        {view === VIEWS.ADD_DOCUMENT && (
+          <View
+            controls={<button onClick={onCloseAddDocument}>Close</button>}
+            title={'Add Document'}
+          >
+            <AddDocument />
+          </View>
+        )}
+      </div>
     </Auth>
   );
 }
