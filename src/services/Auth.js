@@ -1,42 +1,38 @@
 const gapi = window.gapi;
 
 class AuthService {
-  API_KEY = 'AIzaSyBbFeqijKbGKfv8IRYMIcO037xlI6d1NGc';
-  CLIENT_ID = '336672386049-379vq0uvqrbivmt6qjck5ski62s4oclg.apps.googleusercontent.com';
-  SECRET = 'BTtLJOZzBe0KsQQiTif6mmCC';
+  API_KEY = process.env.REACT_APP_KEY;
+  CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+  SECRET = process.env.REACT_APP_SECRET;
 
   SCOPES = [
-    'https://www.googleapis.com/auth/drive.metadata.readonly'
+    'https://www.googleapis.com/auth/drive'
   ];
 
   init = callback => {
-    console.log('init')
+    console.log(this.API_KEY)
     gapi.load('client:auth2', () => {
       this.onLoadSuccess(callback);
     });
   };
 
   onLoadSuccess = async callback => {
-    console.log('onLoadSuccess')
     await gapi.client.init({
       apiKey: this.API_KEY,
       clientId: this.CLIENT_ID,
       scope: this.SCOPES.join(',')
     });
-    console.log('api init')
-    //callback(true);
+
     this.onInitSucceed(callback);
   };
 
   onInitSucceed = callback => {
-    console.log('onInitSucceed')
     const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
 
     if (isSignedIn) {
       this.loadDriveApi(isSignedIn, callback);
     } else {
       gapi.auth2.getAuthInstance().isSignedIn.listen(isSignedIn => {
-        console.log('isSignedIn', isSignedIn)
         this.loadDriveApi(isSignedIn, callback);
       });
       gapi.auth2.getAuthInstance().signIn();

@@ -12,8 +12,8 @@ function AddDocument() {
   const [step, setStep] = useState(STEPS.CAPTURE);
   const [title, setTitle] = useState('');
 
-  console.log(step)
   let elInput;
+  let file = undefined;
 
   const getInputRef = el => {
     elInput = el;
@@ -30,11 +30,10 @@ function AddDocument() {
   };
 
   const onFileSelect = () => {
-    const files = elInput.files;
-    if (files) {
+    file = elInput.files[0];
+    if (file) {
       setStep(STEPS.DETAILS);
     }
-    console.log(files);
   };
 
   const onTitleChange = evt => {
@@ -44,8 +43,7 @@ function AddDocument() {
   const onSubmit = async evt => {
     evt.preventDefault();
 
-    console.log(description, title)
-    const result = await documentsService.saveDocument({ description, title });
+    const result = await documentsService.saveDocument({ description, file, title });
     console.log(result)
   };
 
