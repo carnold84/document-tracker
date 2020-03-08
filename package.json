@@ -11,7 +11,9 @@
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-scripts": "3.4.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "seamless-immutable": "^7.1.4",
+    "uuid": "^7.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

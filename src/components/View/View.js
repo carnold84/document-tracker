@@ -1,12 +1,18 @@
 import React from 'react';
 import './View.css';
 
-function View({children}) {
+const View = ({children, controls, title}) => {
   return (
-    <div className="view-wrapper">
-      {children}
+    <div className={'view-wrapper'}>
+      <header className={'view-header'}>
+        <h2 className={'title'}>{title}</h2>
+        {controls}
+      </header>
+      <div className={'content'}>
+        {children}
+      </div>
     </div>
   );
-}
+};
 
 export default View;
