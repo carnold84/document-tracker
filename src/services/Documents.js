@@ -1,4 +1,4 @@
-import uuid from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 import Immutable from 'seamless-immutable';
 
 const gapi = window.gapi;
@@ -127,13 +127,12 @@ class DocumentsService {
       });
 
       request.execute((resp) => {
-        console.log(resp)
         resolve(documents);
       });
     });
   };
 
-  saveDocument = data => {
+  saveDocument = async (data, file) => {
     const { documents } = this.data;
 
     const date = new Date();
@@ -159,19 +158,53 @@ class DocumentsService {
         }
       });
     } else {
-      const id = uuid();
+      const id = uuidv4();
+      const fileName = `${id}.jpg`;
 
-      newDocument = {
-        id,
-        ...data,
-        created: date.getTime(),
-        modified: date.getTime()
-      };
+      console.log(id)
 
-      updatedDocuments.push(newDocument);
+      const result = await this.uploadFile(file, fileName);
+
+      console.log(result)
+
+      if (result) {
+        newDocument = {
+          id,
+          ...data,
+          created: date.getTime(),
+          modified: date.getTime()
+        };
+
+        updatedDocuments.push(newDocument);
+      }
     }
 
     return this.updateDocuments(updatedDocuments);
+  };
+
+  uploadFile = (file, fileName) => {
+    console.log(file)
+    return new Promise(async (resolve, reject) => {
+      const request = gapi.client.drive.files.create({
+        name: fileName,
+        mimeType: file.type,
+        fields: 'id',
+        parents: [this.appFolderId]
+      });
+
+      request.execute((resp) => {
+        const request = gapi.client.request({
+          path: '/upload/drive/v3/files/' + resp.id + '?uploadType=media',
+          method: 'PATCH',
+          mimeType: file.type,
+          body: new Blob([file])
+        });
+
+        request.execute(() => {
+          resolve();
+        });
+      });
+    });
   };
 
   deleteProject = document => {

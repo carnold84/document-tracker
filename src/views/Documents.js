@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import documentsService from '../services/Documents';
+import Loading from '../components/Loading/Loading';
 
 const Documents = () => {
   const [documents, setDocuments] = useState();
@@ -14,7 +15,7 @@ const Documents = () => {
   }, []);
 
   if (documents === undefined) {
-    return 'Loading Documents...';
+    return <Loading />;
   } else if (documents === null) {
     return 'Documents Unavailable';
   } else if (documents.length === 0) {

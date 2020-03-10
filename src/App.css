@@ -1,5 +1,10 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
 .app-wrapper {
-  background-color: aquamarine;
   display: flex;
   height: 100%;
   position: absolute;

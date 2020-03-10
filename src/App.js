@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import './App.css';
 
 import Documents from './views/Documents';
-import AddDocument from './views/AddDocument';
+import AddDocument from './views/AddDocument/AddDocument';
 import View from './components/View/View';
-import Auth from './components/Auth/Auth';
+import Auth from './containers/Auth/Auth';
 
 const VIEWS = {
   ADD_DOCUMENT: 'add_document',
