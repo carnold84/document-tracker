@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import authService from '../../services/Auth';
+import Loading from '../../components/Loading/Loading';
 
 const Auth = ({ children }) => {
   const [isAuthed, setIsAuthed] = useState(false);
@@ -17,7 +18,7 @@ const Auth = ({ children }) => {
   if (isAuthed) {
     return children;
   } else {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 };
 

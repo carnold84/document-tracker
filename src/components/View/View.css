@@ -8,14 +8,22 @@
 
 .view-header {
   align-items: center;
+  border-bottom: 1px solid #eeeeee;
   display: flex;
-  justify-content: space-between;
   height: 50px;
+  justify-content: space-between;
+  padding: 0 20px;
   width: 100%;
 }
 
+.view-header .title {
+  color: #222222;
+  font-size: 18px;
+  font-weight: 400;
+}
+
 .view-content {
-  background-color: blueviolet;
   display: flex;
   flex-grow: 1;
+  padding: 20px;
 }

@@ -1,0 +1,8 @@
+.add-document-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-image {
+  width: 100%;
+}
