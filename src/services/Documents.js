@@ -182,27 +182,66 @@ class DocumentsService {
     return this.updateDocuments(updatedDocuments);
   };
 
+  createImageData = async (appFolderId, file, fileName) => {
+    return new Promise((resolve, reject) => {
+      const boundary = '-------314159265358979323846';
+      const delimiter = "\r\n--" + boundary + "\r\n";
+      const close_delim = "\r\n--" + boundary + "--";
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function (e) {
+        var contentType = file.type || 'application/octet-stream';
+        var metadata = {
+          'name': fileName,
+          'mimeType': contentType,
+          'parents': [appFolderId]
+        };
+        var data = reader.result;
+
+        var multipartRequestBody =
+          delimiter + 'Content-Type: application/json\r\n\r\n' +
+          JSON.stringify(metadata) +
+          delimiter +
+          'Content-Type: ' + contentType + '\r\n';
+
+        //Transfer images as base64 string.
+        if (contentType.indexOf('image/') === 0) {
+          var pos = data.indexOf('base64,');
+          multipartRequestBody += 'Content-Transfer-Encoding: base64\r\n' + '\r\n' +
+            data.slice(pos < 0 ? 0 : (pos + 'base64,'.length));
+        } else {
+          multipartRequestBody += + '\r\n' + data;
+        }
+        multipartRequestBody += close_delim;
+
+        console.log(multipartRequestBody)
+
+        resolve({
+          headers: {
+            'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
+          },
+          body: multipartRequestBody
+        });
+      };
+    });
+  };
+
   uploadFile = (file, fileName) => {
-    console.log(file)
     return new Promise(async (resolve, reject) => {
-      const request = gapi.client.drive.files.create({
-        name: fileName,
-        mimeType: file.type,
-        fields: 'id',
-        parents: [this.appFolderId]
+      const data = await this.createImageData(this.appFolderId, file, fileName);
+
+      const request = gapi.client.request({
+        body: data.body,
+        headers: data.headers,
+        method: 'POST',
+        params: {
+          uploadType: 'multipart'
+        },
+        path: '/upload/drive/v3/files'
       });
 
-      request.execute((resp) => {
-        const request = gapi.client.request({
-          path: '/upload/drive/v3/files/' + resp.id + '?uploadType=media',
-          method: 'PATCH',
-          mimeType: file.type,
-          body: new Blob([file])
-        });
-
-        request.execute(() => {
-          resolve();
-        });
+      request.execute(file => {
+        resolve(file);
       });
     });
   };
