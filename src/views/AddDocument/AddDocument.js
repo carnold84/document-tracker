@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import './AddDocument.css';
+import styled from 'styled-components';
 
 import documentsService from '../../services/Documents';
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Preview = styled.img`
+  width: 100%;
+`;
 
 const STEPS = {
   CAPTURE: 'capture',
@@ -77,12 +86,12 @@ const AddDocument = () => {
         />
       )}
       {step === STEPS.DETAILS && (
-        <form className={'add-document-form'} onSubmit={onSubmit}>
-          <img alt={'Preview'} className={'preview-image'} src={imageUrl} />
+        <Form onSubmit={onSubmit}>
+          <Preview alt={'Preview'} className={'preview-image'} src={imageUrl} />
           <input onChange={onTitleChange} type={'text'} value={title} />
           <textarea onChange={onDescriptionChange} value={description} />
           <button>Save</button>
-        </form>
+        </Form>
       )}
     </main>
   );

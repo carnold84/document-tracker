@@ -187,18 +187,19 @@ class DocumentsService {
       const boundary = '-------314159265358979323846';
       const delimiter = "\r\n--" + boundary + "\r\n";
       const close_delim = "\r\n--" + boundary + "--";
-      var reader = new FileReader();
+
+      const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = function (e) {
-        var contentType = file.type || 'application/octet-stream';
-        var metadata = {
+      reader.onload = () => {
+        const contentType = file.type || 'application/octet-stream';
+        const metadata = {
           'name': fileName,
           'mimeType': contentType,
           'parents': [appFolderId]
         };
-        var data = reader.result;
+        const data = reader.result;
 
-        var multipartRequestBody =
+        let multipartRequestBody =
           delimiter + 'Content-Type: application/json\r\n\r\n' +
           JSON.stringify(metadata) +
           delimiter +
@@ -206,15 +207,13 @@ class DocumentsService {
 
         //Transfer images as base64 string.
         if (contentType.indexOf('image/') === 0) {
-          var pos = data.indexOf('base64,');
+          const pos = data.indexOf('base64,');
           multipartRequestBody += 'Content-Transfer-Encoding: base64\r\n' + '\r\n' +
             data.slice(pos < 0 ? 0 : (pos + 'base64,'.length));
         } else {
           multipartRequestBody += + '\r\n' + data;
         }
         multipartRequestBody += close_delim;
-
-        console.log(multipartRequestBody)
 
         resolve({
           headers: {
