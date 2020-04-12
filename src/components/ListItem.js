@@ -11,7 +11,7 @@ const Wrapper = styled.li`
   grid-template-columns: 1fr 100px 40px;
   justify-content: flex-end;
   margin: 0 0 20px;
-  padding: 20px 25px;
+  padding: 15px 25px;
 `;
 
 const Text = styled.div`
@@ -50,21 +50,21 @@ const Type = styled.p`
 const Btn = styled.div`
   align-items: center;
   background-color: ${props => props.theme.color1};
-  border-radius: 20px;
+  border-radius: 17px;
   display: flex;
   fill: ${props => props.theme.text2};
-  height: 40px;
+  height: 34px;
   justify-content: center;
-  width: 40px;
+  width: 34px;
 
   svg {
-    transform: scaleX(-1) translateX(4px);
+    transform: scaleX(-1) translateX(3px);
   }
 `;
 
-const View = ({ subTitle, title, type }) => {
+const View = ({ onClick, subTitle, title, type }) => {
   return (
-    <Wrapper>
+    <Wrapper onClick={onClick}>
       <Text>
         <Title>{title}</Title>
         <SubTitle>{subTitle}</SubTitle>
@@ -73,7 +73,7 @@ const View = ({ subTitle, title, type }) => {
         <Type>{type}</Type>
       </TypeContainer>
       <Btn>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
           <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"/>
           <path fill="none" d="M0 0h24v24H0z"/>
         </svg>

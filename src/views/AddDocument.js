@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-import documentsService from '../../services/Documents';
-import View from '../../components/View/View';
-import ActionButton from '../../components/ActionButton';
+import DocumentsService from '../services/Documents';
+import View from '../components/View/View';
+import ActionButton from '../components/ActionButton';
 
 const FormContainer = styled.div`
   display: flex;
@@ -131,7 +131,7 @@ const AddDocument = ({onClose}) => {
     evt.preventDefault();
 
     const data = { description, title };
-    const result = await documentsService.saveDocument(data, file);
+    const result = await DocumentsService.saveDocument(data, file);
   };
 
   return (

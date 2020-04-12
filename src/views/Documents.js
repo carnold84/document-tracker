@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-import documentsService from '../services/Documents';
 import ListItem from '../components/ListItem';
 import Loading from '../components/Loading/Loading';
 
@@ -31,35 +30,7 @@ const List = styled.ul`
   padding: 0;
 `;
 
-const dummyData = [];
-const types = ['Receipt', 'Application', 'Statement'];
-
-for (let i = 0; i < 15; i++) {
-  dummyData.push(
-    {
-      created: 1586571831498,
-      description: `Description for document number ${i + 1}`,
-      id: `id${i}`,
-      modified: 1586571831498,
-      title: `Document ${i + 1}`,
-      type: types[Math.round(Math.random() * 2)]
-    }
-  );
-}
-
-console.log(dummyData)
-
-const Documents = ({onAddDocument}) => {
-  const [documents, setDocuments] = useState();
-
-  const onDocumentsInit = result => {
-    setDocuments(result.documents);
-  };
-
-  useEffect(() => {
-    //documentsService.init(onDocumentsInit);
-    setDocuments(dummyData);
-  }, []);
+const Documents = ({documents, onAddDocument, onViewDocument}) => {
 
   console.log(documents)
   let content;
@@ -77,6 +48,7 @@ const Documents = ({onAddDocument}) => {
           return (
             <ListItem
               key={document.id}
+              onClick={() => onViewDocument(document.id)}
               subTitle={formatDate(document.created)}
               title={document.title}
               type={document.type}
