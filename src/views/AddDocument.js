@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import DocumentsService from '../services/Documents';
-import View from '../components/View/View';
 import ActionButton from '../components/ActionButton';
+import BackButton from '../components/BackButton';
+import RadioGroup from '../components/RadioGroup';
+import View from '../components/View/View';
 
 const FormContainer = styled.div`
   display: flex;
@@ -47,24 +49,9 @@ const TextField = styled.input`
 `;
 
 const Textarea = styled(TextField).attrs({
-  as: 'textarea'
+  as: 'textarea',
 })`
   border-radius: 5px;
-`;
-
-const BackButton = styled.button`
-  align-items: center;
-  background-color: transparent;
-  border: none;
-  color: ${props => props.theme.textAlt1};
-  display: flex;
-  fill: ${props => props.theme.textAlt1};
-  font-family: ${props => props.theme.fontFamilySecondary};
-  font-size: 1em;
-  left: 20px;
-  padding: 7px 0;
-  position: absolute;
-  top: 20px;
 `;
 
 const STEPS = {
@@ -90,6 +77,7 @@ const AddDocument = ({onAddComplete, onClose}) => {
   const [imageUrl, setImageUrl] = useState('');
   const [step, setStep] = useState(STEPS.CAPTURE);
   const [title, setTitle] = useState('');
+  const [type, setType] = useState('receipt');
 
   let elInput;
 
@@ -122,11 +110,15 @@ const AddDocument = ({onAddComplete, onClose}) => {
     setTitle(evt.currentTarget.value);
   };
 
+  const onTypeChange = value => {
+    setType(value);
+  };
+
   const onSubmit = async evt => {
     evt.preventDefault();
 
-    const data = { description, title };
-    const result = await DocumentsService.saveDocument(data, file);
+    const data = { description, title, type };
+    await DocumentsService.saveDocument(data, file);
 
     onAddComplete();
   };
@@ -136,13 +128,7 @@ const AddDocument = ({onAddComplete, onClose}) => {
       <View
         controls={
           <div>
-            <BackButton onClick={onClose}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"/>
-                <path fill="none" d="M0 0h24v24H0z"/>
-              </svg>
-              <span>Back</span>
-            </BackButton>
+            <BackButton onClick={onClose} />
             <ActionButton type={'submit'}>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none"/>
@@ -167,6 +153,27 @@ const AddDocument = ({onAddComplete, onClose}) => {
             <FormContainer onSubmit={onSubmit}>
               <Label htmlFor="title">Name</Label>
               <TextField id={'title'} onChange={onTitleChange} type={'text'} value={title} />
+              <Label>Type</Label>
+              <RadioGroup
+                name={'type'}
+                onChange={onTypeChange}
+                options={[
+                  {
+                    label: 'Receipt',
+                    value: 'receipt',
+                  },
+                  {
+                    label: 'Application',
+                    value: 'application',
+                  },
+                  {
+                    label: 'Statement',
+                    value: 'statement',
+                  },
+                ]}
+                style={{margin: '0 0 20px'}}
+                value={type}
+              />
               <Label as="div">Preview</Label>
               <Preview>
                 <PreviewImg alt={'Preview'} className={'preview-image'} src={imageUrl} />
