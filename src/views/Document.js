@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import BackButton from '../components/BackButton';
 import View from '../components/View/View';
 
 const Preview = styled.div`
@@ -20,11 +21,16 @@ const Text = styled.p`
   color: ${props => props.theme.text1};
 `;
 
-const AddDocument = ({document}) => {
+const AddDocument = ({document, onClose}) => {
   const {description, name, thumbnailLink} = document;
 
   return (
-    <View title={name}>
+    <View
+      controls={
+        <BackButton onClick={onClose} />
+      }
+      title={name}
+    >
       <Preview>
         <PreviewImg src={thumbnailLink} />
       </Preview>

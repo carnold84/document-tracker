@@ -27,7 +27,37 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "comma-dangle": [
+        "warn",
+        {
+          "arrays": "always-multiline",
+          "objects": "always-multiline",
+          "imports": "always-multiline",
+          "exports": "always-multiline",
+          "functions": "never"
+        }
+      ],
+      "no-console": [
+        "warn",
+        {
+          "allow": [
+            "info",
+            "warn",
+            "error"
+          ]
+        }
+      ],
+      "semi": [
+        "warn",
+        "always"
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ]
+    }
   },
   "browserslist": {
     "production": [

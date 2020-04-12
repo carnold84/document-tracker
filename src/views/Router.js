@@ -42,7 +42,7 @@ const Router = () => {
     setView(VIEWS.ADD_DOCUMENT);
   };
 
-  const onCloseAddDocument = () => {
+  const onCloseView = () => {
     setCurrentDocumentId(null);
     setView(VIEWS.DOCUMENTS);
   };
@@ -70,10 +70,10 @@ const Router = () => {
         />
       )}
       {view === VIEWS.ADD_DOCUMENT && (
-        <AddDocument onAddComplete={onAddComplete} onClose={onCloseAddDocument} />
+        <AddDocument onAddComplete={onAddComplete} onClose={onCloseView} />
       )}
       {view === VIEWS.DOCUMENT && (
-        <Document document={document} />
+        <Document document={document} onClose={onCloseView} />
       )}
     </Wrapper>
   );

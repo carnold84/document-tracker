@@ -37,7 +37,7 @@ class DocumentsService {
     const request = gapi.client.drive.files.create({
       name: this.APP_FOLDER,
       mimeType: 'application/vnd.google-apps.folder',
-      fields: 'id'
+      fields: 'id',
     });
 
     request.execute(async resp => {
@@ -52,7 +52,6 @@ class DocumentsService {
 
   loadFileList = () => {
     return new Promise((resolve, reject) => {
-      console.log('loadFileList')
       const fields = [
         'createdTime',
         'description',
@@ -71,39 +70,13 @@ class DocumentsService {
       });
 
       request.execute(resp => {
-        console.log('files', resp)
         resolve(resp.files);
       });
     });
   };
 
-  updateDocuments = async (documents) => {
-    return new Promise((resolve, reject) => {
-      const content = {
-        data: {
-          ...this.data,
-          documents: documents,
-        },
-      };
-
-      const request = gapi.client.request({
-        path: '/upload/drive/v3/files/' + this.documentsFileId + '?uploadType=media',
-        method: 'PATCH',
-        body: JSON.stringify(content)
-      });
-
-      request.execute((resp) => {
-        resolve(documents);
-      });
-    });
-  };
-
   saveDocument = async (data, file) => {
-    console.log(data, file)
-
     const result = await this.uploadFile({data, file});
-
-    console.log(result)
 
     return result;
   };
@@ -111,13 +84,13 @@ class DocumentsService {
   createImageData = async ({appFolderId, data, file}) => {
     return new Promise((resolve, reject) => {
       const boundary = '-------314159265358979323846';
-      const delimiter = "\r\n--" + boundary + "\r\n";
-      const close_delim = "\r\n--" + boundary + "--";
+      const delimiter = '\r\n--' + boundary + '\r\n';
+      const close_delim = '\r\n--' + boundary + '--';
 
       const reader = new FileReader();
       reader.readAsDataURL(file);
 
-      const {description, title} = data;
+      const {description, title, type} = data;
 
       reader.onload = () => {
         const contentType = file.type || 'application/octet-stream';
@@ -127,8 +100,8 @@ class DocumentsService {
           mimeType: contentType,
           parents: [appFolderId],
           properties: {
-            type: 'receipt'
-          }
+            type,
+          },
         };
         const {result} = reader;
 
@@ -150,9 +123,9 @@ class DocumentsService {
 
         resolve({
           headers: {
-            'Content-Type': `multipart/mixed; boundary="${boundary}"`
+            'Content-Type': `multipart/mixed; boundary="${boundary}"`,
           },
-          body: multipartRequestBody
+          body: multipartRequestBody,
         });
       };
     });
@@ -171,9 +144,9 @@ class DocumentsService {
         headers,
         method: 'POST',
         params: {
-          uploadType: 'multipart'
+          uploadType: 'multipart',
         },
-        path: '/upload/drive/v3/files'
+        path: '/upload/drive/v3/files',
       });
 
       request.execute(file => {
