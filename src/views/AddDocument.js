@@ -84,10 +84,9 @@ const readURL = file => {
   });
 };
 
-const AddDocument = ({onClose}) => {
+const AddDocument = ({onAddComplete, onClose}) => {
   const [description, setDescription] = useState('');
   const [file, setFile] = useState();
-  const [fileName, setFileName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [step, setStep] = useState(STEPS.CAPTURE);
   const [title, setTitle] = useState('');
@@ -119,10 +118,6 @@ const AddDocument = ({onClose}) => {
     }
   };
 
-  const onFileNameChange = evt => {
-    setFileName(evt.currentTarget.value);
-  };
-
   const onTitleChange = evt => {
     setTitle(evt.currentTarget.value);
   };
@@ -132,6 +127,8 @@ const AddDocument = ({onClose}) => {
 
     const data = { description, title };
     const result = await DocumentsService.saveDocument(data, file);
+
+    onAddComplete();
   };
 
   return (
@@ -170,8 +167,6 @@ const AddDocument = ({onClose}) => {
             <FormContainer onSubmit={onSubmit}>
               <Label htmlFor="title">Name</Label>
               <TextField id={'title'} onChange={onTitleChange} type={'text'} value={title} />
-              <Label htmlFor="fileName">File Name</Label>
-              <TextField id={'fileName'} onChange={onFileNameChange} type={'text'} value={fileName} />
               <Label as="div">Preview</Label>
               <Preview>
                 <PreviewImg alt={'Preview'} className={'preview-image'} src={imageUrl} />

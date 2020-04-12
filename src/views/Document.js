@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import View from '../components/View/View';
@@ -16,13 +16,20 @@ const PreviewImg = styled.img`
   width: 100%;
 `;
 
+const Text = styled.p`
+  color: ${props => props.theme.text1};
+`;
+
 const AddDocument = ({document}) => {
+  const {description, name, thumbnailLink} = document;
+
   return (
-      <View
-        title={document.title}
-      >
-        {document.title}
-      </View>
+    <View title={name}>
+      <Preview>
+        <PreviewImg src={thumbnailLink} />
+      </Preview>
+      <Text>{description}</Text>
+    </View>
   );
 };
 
