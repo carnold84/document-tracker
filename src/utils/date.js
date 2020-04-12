@@ -1,5 +1,5 @@
-import {format} from 'date-fns';
+import {format, parseISO} from 'date-fns';
 
-export const formatDate = timestamp => {
-  return format(timestamp, 'd MMMM yyyy');
+export const formatISODate = timestamp => {
+  return format(parseISO(timestamp), 'd MMMM yyyy');
 };

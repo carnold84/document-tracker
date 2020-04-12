@@ -21,13 +21,21 @@ const Router = () => {
   const [view, setView] = useState(VIEWS.DOCUMENTS);
   const [currentDocumentId, setCurrentDocumentId] = useState(null);
 
-  const onDocumentsInit = result => {
-    setDocuments(result.documents);
+  const onDocumentsInit = files => {
+    console.log(files)
+    setDocuments(files);
   };
 
   useEffect(() => {
     DocumentsService.init(onDocumentsInit);
   }, []);
+
+  const onAddComplete = async () => {
+    setDocuments(undefined);
+    setView(VIEWS.DOCUMENTS);
+    const result = await DocumentsService.loadFileList();
+    setDocuments(result);
+  };
 
   const onAddDocument = () => {
     setCurrentDocumentId(null);
@@ -62,7 +70,7 @@ const Router = () => {
         />
       )}
       {view === VIEWS.ADD_DOCUMENT && (
-        <AddDocument onClose={onCloseAddDocument} />
+        <AddDocument onAddComplete={onAddComplete} onClose={onCloseAddDocument} />
       )}
       {view === VIEWS.DOCUMENT && (
         <Document document={document} />

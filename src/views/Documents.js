@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ListItem from '../components/ListItem';
 import Loading from '../components/Loading/Loading';
 
-import {formatDate} from '../utils/date';
+import {formatISODate} from '../utils/date';
 import View from '../components/View/View';
 import ActionButton from '../components/ActionButton';
 
@@ -49,9 +49,9 @@ const Documents = ({documents, onAddDocument, onViewDocument}) => {
             <ListItem
               key={document.id}
               onClick={() => onViewDocument(document.id)}
-              subTitle={formatDate(document.created)}
-              title={document.title}
-              type={document.type}
+              subTitle={formatISODate(document.createdTime)}
+              title={document.name}
+              type={document.properties.type}
             />
           );
         })}
