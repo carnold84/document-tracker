@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
+import React from 'react';
+import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
 import theme from './theme';
-import Documents from './views/Documents';
-import AddDocument from './views/AddDocument/AddDocument';
+import Router from './views/Router';
 import Auth from './containers/Auth/Auth';
 
 const GlobalStyles = createGlobalStyle`
@@ -14,6 +13,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
+    background-color: ${props => props.theme.color1};
     font-family: ${props => props.theme.fontFamilySecondary};
     font-size: 14px;
     margin: 0;
@@ -22,39 +22,12 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-const Wrapper = styled.div`
-  background-color: ${props => props.theme.color1};
-  position: relative;
-`;
-
-const VIEWS = {
-  ADD_DOCUMENT: 'add_document',
-  DOCUMENTS: 'documents'
-};
-
 const App = () => {
-  const [view, setView] = useState(VIEWS.DOCUMENTS);
-
-  const onAddDocument = () => {
-    setView(VIEWS.ADD_DOCUMENT);
-  };
-
-  const onCloseAddDocument = () => {
-    setView(VIEWS.DOCUMENTS);
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Auth>
-        <Wrapper>
-          {view === VIEWS.DOCUMENTS && (
-            <Documents onAddDocument={onAddDocument} />
-          )}
-          {view === VIEWS.ADD_DOCUMENT && (
-            <AddDocument onClose={onCloseAddDocument} />
-          )}
-        </Wrapper>
+        <Router />
       </Auth>
     </ThemeProvider>
   );
