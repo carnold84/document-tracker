@@ -24,7 +24,7 @@ const Header = styled.header`
 
 const HeaderTitle = styled.h2`
   color: #222222;
-  font-family: "Lora", serif;
+  font-family: ${props => props.theme.fontFamilyPrimary};
   font-size: 2em;
   font-style: italic;
   font-weight: 400;

@@ -16,9 +16,9 @@ const Wrapper = styled.li`
 
 const Text = styled.div`
   display: grid;
-  font-family: "Lato",serif;
+  font-family: ${props => props.theme.fontFamilySecondary};
   grid-gap: 7px;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: auto auto;
 `;
 
 const Title = styled.h3`
@@ -73,7 +73,10 @@ const View = ({ subTitle, title, type }) => {
         <Type>{type}</Type>
       </TypeContainer>
       <Btn>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"/><path fill="none" d="M0 0h24v24H0z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+          <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"/>
+          <path fill="none" d="M0 0h24v24H0z"/>
+        </svg>
       </Btn>
     </Wrapper>
   );

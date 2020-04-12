@@ -5,6 +5,10 @@ import documentsService from '../services/Documents';
 import ListItem from '../components/ListItem';
 import Loading from '../components/Loading/Loading';
 
+import {formatDate} from '../utils/date';
+import View from '../components/View/View';
+import ActionButton from '../components/ActionButton';
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -45,7 +49,7 @@ for (let i = 0; i < 15; i++) {
 
 console.log(dummyData)
 
-const Documents = () => {
+const Documents = ({onAddDocument}) => {
   const [documents, setDocuments] = useState();
 
   const onDocumentsInit = result => {
@@ -73,7 +77,7 @@ const Documents = () => {
           return (
             <ListItem
               key={document.id}
-              subTitle={document.created}
+              subTitle={formatDate(document.created)}
               title={document.title}
               type={document.type}
             />
@@ -84,9 +88,28 @@ const Documents = () => {
   }
 
   return (
-    <Wrapper>
-      {content}
-    </Wrapper>
+    <View
+      controls={
+        <ActionButton onClick={onAddDocument}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24"
+            viewBox="0 0 24 24"
+            width="24"
+          >
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            <path d="M0 0h24v24H0z" fill="none"/>
+          </svg>
+        </ActionButton>
+      }
+      maxHeight={250}
+      minHeight={60}
+      title={'Document'}
+    >
+      <Wrapper>
+        {content}
+      </Wrapper>
+    </View>
   )
 }
 
