@@ -1,10 +1,26 @@
 import React, { useState } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 
 import theme from './theme';
 import Documents from './views/Documents';
 import AddDocument from './views/AddDocument/AddDocument';
 import Auth from './containers/Auth/Auth';
+
+const GlobalStyles = createGlobalStyle`
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: ${props => props.theme.fontFamilySecondary};
+    font-size: 14px;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+`;
 
 const Wrapper = styled.div`
   background-color: ${props => props.theme.color1};
@@ -29,6 +45,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <GlobalStyles />
       <Auth>
         <Wrapper>
           {view === VIEWS.DOCUMENTS && (
