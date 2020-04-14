@@ -2,7 +2,7 @@ import React from 'react';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
 import theme from './theme';
-import Router from './views/Router';
+import Main from './views/Main';
 import Auth from './containers/Auth/Auth';
 
 const GlobalStyles = createGlobalStyle`
@@ -27,7 +27,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Auth>
-        <Router />
+        <Main />
       </Auth>
     </ThemeProvider>
   );

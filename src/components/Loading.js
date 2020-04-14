@@ -1,10 +1,13 @@
-@keyframes rotate {
+import React from 'react';
+import styled, { keyframes } from 'styled-components';
+
+const rotate = keyframes`
   100% {
     transform: rotate(360deg);
   }
-}
+`;
 
-@keyframes dash {
+const dash = keyframes`
   0% {
     stroke-dasharray: 1, 200;
     stroke-dashoffset: 0;
@@ -17,9 +20,9 @@
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -124px;
   }
-}
+`;
 
-.wrapper {
+const Wrapper = styled.div`
   align-items: center;
   display: flex;
   height: 100%;
@@ -28,48 +31,64 @@
   position: absolute;
   top: 0;
   width: 100%;
-}
+`;
 
-.container {
+const Container = styled.div`
   bottom: 0;
   height: 50px;
   left: 0;
   right: 0;
   top: 0;
   width: 50px;
-}
+`;
 
-.loader {
+const Loader = styled.div`
   margin: 0 auto;
   position: relative;
   width: 50px;
-}
 
-.loader:before {
-  content: "";
-  display: block;
-  padding-top: 100%;
-}
+  &:before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+  }
+`;
 
-.circle {
-  animation: rotate 2s linear infinite;
+const Circle = styled.svg`
+  animation: ${rotate} 2s linear infinite;
   bottom: 0;
   height: 50px;
   left: 0;
   margin: auto;
   position: absolute;
   right: 0;
-  stroke: #000000;
+  stroke: ${props => props.theme.colorAlt2};
   top: 0;
   transform-origin: center center;
   width: 50px;
-}
+`;
 
-.path {
-  animation: dash 1.5s ease-in-out infinite;
+const Path = styled.circle`
+  animation: ${dash} 1.5s ease-in-out infinite;
   stroke-dasharray: 1, 200;
   stroke-dashoffset: 0;
   stroke-linecap: round;
   stroke-miterlimit: 10;
   stroke-width: 3px;
-}
+`;
+
+const Loading = () => {
+  return (
+    <Wrapper>
+      <Container>
+        <Loader>
+          <Circle viewBox="25 25 50 50">
+            <Path cx="50" cy="50" r="15" fill="none" />
+          </Circle>
+        </Loader>
+      </Container>
+    </Wrapper>
+  );
+};
+
+export default Loading;

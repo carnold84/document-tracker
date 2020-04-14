@@ -6,14 +6,19 @@ const Wrapper = styled.button`
   background-color: transparent;
   border: none;
   color: ${props => props.theme.textAlt1};
+  cursor: pointer;
   display: flex;
   fill: ${props => props.theme.textAlt1};
   font-family: ${props => props.theme.fontFamilySecondary};
   font-size: 1em;
-  left: 20px;
   padding: 7px 0;
-  position: absolute;
-  top: 20px;
+
+  &:hover {
+    svg {
+      transform: scale3d(1.2, 1.2, 1.2);
+      transition: transform 200ms;
+    }
+  }
 `;
 
 const BackButton = ({ children, ...rest }) => {

@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
 
-import AuthService from '../../services/Auth';
-import Loading from '../../components/Loading/Loading';
+import authService from '../../services/Auth';
+import Loading from '../../components/Loading';
 
 const Auth = ({ children }) => {
   const [isAuthed, setIsAuthed] = useState(false);
 
   const auth = async () => {
-    await AuthService.init();
+    await authService.init();
     setIsAuthed(true);
   };
 
   useEffect(() => {
     auth();
   });
-
-  console.log(isAuthed)
 
   if (isAuthed) {
     return children;

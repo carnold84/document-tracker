@@ -7,13 +7,20 @@ const Wrapper = styled.button`
   border: 1px solid ${props => props.theme.colorAlt1};
   border-radius: 30px;
   bottom: -30px;
+  cursor: pointer;
   display: flex;
   fill: ${props => props.theme.colorAlt1};
   height: 60px;
   justify-content: center;
   position: absolute;
   right: 20px;
+  transition: transform 200ms;
   width: 60px;
+
+  &:hover {
+    background-color: #293238;
+    transform: scale(1.1);
+  }
 `;
 
 const ActionButton = ({ children, ...rest }) => {

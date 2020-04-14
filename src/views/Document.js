@@ -2,7 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 
 import BackButton from '../components/BackButton';
-import View from '../components/View/View';
+import View from '../components/View';
+import Label from '../components/Label';
+import TextField from '../components/TextField';
+import Textarea from '../components/Textarea';
+import Tag from '../components/Tag';
+
+const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const Preview = styled.div`
   background-color: ${props => props.theme.color2};
@@ -17,26 +26,44 @@ const PreviewImg = styled.img`
   width: 100%;
 `;
 
-const Text = styled.p`
-  color: ${props => props.theme.text1};
+const TagContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  margin: 0 0 20px;
 `;
 
-const AddDocument = ({document, onClose}) => {
-  const {description, name, thumbnailLink} = document;
+const Document = ({document, onClose}) => {
+  const {description, name, properties, thumbnailLink, webViewLink} = document;
 
   return (
     <View
       controls={
         <BackButton onClick={onClose} />
       }
-      title={name}
     >
-      <Preview>
-        <PreviewImg src={thumbnailLink} />
-      </Preview>
-      <Text>{description}</Text>
+      <FormContainer>
+        <Label htmlFor="title">Name</Label>
+        <TextField disabled={true} id={'title'} type={'text'} value={name} />
+        <Label>Type</Label>
+        <TagContainer>
+          <Tag>{properties.type}</Tag>
+        </TagContainer>
+        <Label as="div">Preview</Label>
+        <Preview>
+          <a href={webViewLink} rel={'noopener noreferrer'} target={'_blank'}>
+            <PreviewImg alt={'Preview'} className={'preview-image'} src={thumbnailLink} />
+          </a>
+        </Preview>
+        <Label htmlFor="description">Description</Label>
+        <Textarea
+          disabled={true}
+          id={'description'}
+          style={{height: '88px'}}
+          value={description}
+        />
+      </FormContainer>
     </View>
   );
 };
 
-export default AddDocument;
+export default Document;
