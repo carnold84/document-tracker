@@ -21,6 +21,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build-docs": "react-scripts build",
     "remove-docs": "rimraf docs",
     "rename": "node -e \"require('fs').rename('build', 'docs', function(err) { if (err) console.log(err); console.log('File successfully renamed!') })\"",
     "postbuild-docs": "npm run remove-docs && npm run rename",
