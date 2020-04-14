@@ -44,7 +44,6 @@ const Documents = ({documents, onAddDocument, onViewDocument}) => {
     content = <Empty>No Documents</Empty>;
   } else {
     const sortedDocuments = _orderBy(documents, [sortBy], ['desc']);
-    console.log(sortedDocuments);
 
     content = (
       <List>

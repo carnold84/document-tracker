@@ -138,7 +138,6 @@ const AddDocument = ({onAddComplete, onClose}) => {
   };
 
   const onSubmit = async evt => {
-    console.log(onSubmit);
     evt.preventDefault();
 
     setIsSaving(true);
