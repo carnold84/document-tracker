@@ -4,12 +4,25 @@ import styled from 'styled-components';
 import DocumentsService from '../services/Documents';
 import ActionButton from '../components/ActionButton';
 import BackButton from '../components/BackButton';
+import Label from '../components/Label';
 import RadioGroup from '../components/RadioGroup';
-import View from '../components/View/View';
+import Textarea from '../components/Textarea';
+import TextField from '../components/TextField';
+import View, { HEADER_TYPES } from '../components/View';
+import { format } from 'date-fns';
+import Loading from '../components/Loading';
 
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const Title = styled.h2`
+  color: ${props => props.theme.text1};
+  font-family: ${props => props.theme.fontFamilyPrimary};
+  font-style: italic;
+  font-weight: 400;
+  margin: 0 0 20px;
 `;
 
 const Preview = styled.div`
@@ -25,33 +38,33 @@ const PreviewImg = styled.img`
   width: 100%;
 `;
 
-const Label = styled.label`
-  color: ${props => props.theme.text2};
-  font-family: ${props => props.theme.fontFamilyPrimary};
-  font-style: italic;
-  margin: 0 0 5px;
+const FileInputWrapper = styled.div`
+  position: relative;
 `;
 
-const TextField = styled.input`
-  background-color: ${props => props.theme.color1};
-  border: 2px solid ${props => props.theme.color3};
-  border-radius: 22px;
-  color: ${props => props.theme.text1};
-  font-family: ${props => props.theme.fontFamilySecondary};
-  font-size: 1em;
-  margin: 0 0 20px;
-  padding: 7px 15px;
-
-  &:focus {
-    box-shadow: 0 0 0 2px ${props => props.theme.color4};
-    outline: none;
-  }
-`;
-
-const Textarea = styled(TextField).attrs({
-  as: 'textarea',
+const FileInputButton = styled(TextField).attrs({
+  as: 'div',
 })`
-  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 12px 15px;
+  pointer-events: none;
+  width: 100%;
+`;
+
+const FileInput = styled.input.attrs({
+  accept: 'image/*',
+  capture: 'environment',
+  type: 'file',
+})`
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
 `;
 
 const STEPS = {
@@ -75,9 +88,12 @@ const AddDocument = ({onAddComplete, onClose}) => {
   const [description, setDescription] = useState('');
   const [file, setFile] = useState();
   const [imageUrl, setImageUrl] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
   const [step, setStep] = useState(STEPS.CAPTURE);
-  const [title, setTitle] = useState('');
-  const [type, setType] = useState('receipt');
+  const [type, setType] = useState('Receipt');
+  const defTitle = `${type}-${format(new Date(), 'd-MMMM-yyyy-HH-mm')}`;
+  const [defaultTitle, setDefaultTitle] = useState(defTitle);
+  const [title, setTitle] = useState(defaultTitle);
 
   let elInput;
 
@@ -112,13 +128,25 @@ const AddDocument = ({onAddComplete, onClose}) => {
 
   const onTypeChange = value => {
     setType(value);
+
+    if (title === defaultTitle) {
+      const newTitle = `${value}-${format(new Date(), 'd-MMMM-yyyy-HH-mm')}`;
+      
+      setTitle(newTitle);
+      setDefaultTitle(newTitle);
+    }
   };
 
   const onSubmit = async evt => {
+    console.log(onSubmit);
     evt.preventDefault();
+
+    setIsSaving(true);
 
     const data = { description, title, type };
     await DocumentsService.saveDocument(data, file);
+    
+    setIsSaving(false);
 
     onAddComplete();
   };
@@ -131,63 +159,65 @@ const AddDocument = ({onAddComplete, onClose}) => {
             <BackButton onClick={onClose} />
             <ActionButton type={'submit'}>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-              <path d="M0 0h24v24H0z" fill="none"/>
-              <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                <path d="M0 0h24v24H0z" fill="none"/>
+                <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
               </svg>
             </ActionButton>
           </div>
         }
-        title={'Add Document'}
+        defaultHeaderType={HEADER_TYPES.COMPACT}
       >
-        <main className="capture-image">
-          {step === STEPS.CAPTURE && (
-            <input
-              accept="image/*"
-              capture="environment"
+        {isSaving && <Loading />}
+        <Title>Add Document</Title>
+        {!isSaving && step === STEPS.CAPTURE && (
+          <FileInputWrapper>
+            <FileInputButton>Select A File</FileInputButton>
+            <FileInput
               onChange={onFileSelect}
               ref={getInputRef}
-              type="file"
             />
-          )}
-          {step === STEPS.DETAILS && (
-            <FormContainer onSubmit={onSubmit}>
-              <Label htmlFor="title">Name</Label>
-              <TextField id={'title'} onChange={onTitleChange} type={'text'} value={title} />
-              <Label>Type</Label>
-              <RadioGroup
-                name={'type'}
-                onChange={onTypeChange}
-                options={[
-                  {
-                    label: 'Receipt',
-                    value: 'receipt',
-                  },
-                  {
-                    label: 'Application',
-                    value: 'application',
-                  },
-                  {
-                    label: 'Statement',
-                    value: 'statement',
-                  },
-                ]}
-                style={{margin: '0 0 20px'}}
-                value={type}
-              />
-              <Label as="div">Preview</Label>
-              <Preview>
+          </FileInputWrapper>
+        )}
+        {!isSaving && step === STEPS.DETAILS && (
+          <FormContainer>
+            <Label htmlFor="title">Name</Label>
+            <TextField id={'title'} onChange={onTitleChange} type={'text'} value={title} />
+            <Label>Type</Label>
+            <RadioGroup
+              name={'type'}
+              onChange={onTypeChange}
+              options={[
+                {
+                  label: 'Receipt',
+                  value: 'Receipt',
+                },
+                {
+                  label: 'Application',
+                  value: 'Application',
+                },
+                {
+                  label: 'Statement',
+                  value: 'Statement',
+                },
+              ]}
+              style={{margin: '0 0 20px'}}
+              value={type}
+            />
+            <Label as="div">Preview</Label>
+            <Preview>
+              {imageUrl && (
                 <PreviewImg alt={'Preview'} className={'preview-image'} src={imageUrl} />
-              </Preview>
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id={'description'}
-                onChange={onDescriptionChange}
-                style={{height: '88px'}}
-                value={description}
-              />
-            </FormContainer>
-          )}
-        </main>
+              )}
+            </Preview>
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              id={'description'}
+              onChange={onDescriptionChange}
+              style={{height: '88px'}}
+              value={description}
+            />
+          </FormContainer>
+        )}
       </View>
     </form>
   );

@@ -13,16 +13,30 @@ const Wrapper = styled.div`
 const VIEWS = {
   ADD_DOCUMENT: 'add_document',
   DOCUMENTS: 'documents',
-  DOCUMENT: 'document'
+  DOCUMENT: 'document',
 };
 
-const Router = () => {
+/* let dummyData = [];
+for (let i = 0; i < 15; i++) {
+  dummyData.push({
+    id: `id-${i}`,
+    name: 'My new receipt',
+    description: 'My description',
+    properties: {type: 'statement'},
+    webViewLink: 'https://drive.google.com/file/d/1-rTZN7FSF06HDQcBgk1g6loXp4PE_KHF/view?usp=drivesdk',
+    thumbnailLink: 'https://lh3.googleusercontent.com/o83S2yUrrCBVat61J0TmgXKD_EsiOjP49omI-hd1LCccyExRfMLRy_ml0L5PnhhJWwHpteoAiGY=s220',
+    createdTime: '2020-04-12T22:20:52.890Z',
+    modifiedTime: '2020-04-12T22:20:52.890Z',
+    fullFileExtension: '',
+  });
+} */
+
+const Main = () => {
   const [documents, setDocuments] = useState();
   const [view, setView] = useState(VIEWS.DOCUMENTS);
   const [currentDocumentId, setCurrentDocumentId] = useState(null);
 
   const onDocumentsInit = files => {
-    console.log(files)
     setDocuments(files);
   };
 
@@ -48,7 +62,6 @@ const Router = () => {
   };
 
   const onViewDocument = id => {
-    console.log(id)
     setCurrentDocumentId(id);
     setView(VIEWS.DOCUMENT);
   };
@@ -79,4 +92,4 @@ const Router = () => {
   );
 };
 
-export default Router;
+export default Main;
