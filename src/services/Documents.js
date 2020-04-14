@@ -1,6 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-import Immutable from 'seamless-immutable';
-
 const gapi = window.gapi;
 
 class DocumentsService {
@@ -20,32 +17,18 @@ class DocumentsService {
 
   checkAppFolder = () => {
     const request = gapi.client.drive.files.list({
-      'q': 'name="' + this.APP_FOLDER + '" and mimeType="application/vnd.google-apps.folder" and trashed=false',
+      'q': `name="${this.APP_FOLDER}" and mimeType="application/vnd.google-apps.folder" and trashed=false`,
     });
 
-    request.execute((resp) => {
+    request.execute(async resp => {
       var files = resp.files;
       if (files && files.length > 0) {
         this.appFolderId = files[0].id;
-        this.checkFile();
+        
+        this.data = await this.loadFileList();
+        this.callback(this.data);
       } else {
         this.createAppFolder();
-      }
-    });
-  };
-
-  checkFile = () => {
-    const request = gapi.client.drive.files.list({
-      'q': 'name="' + this.DOCUMENTS_FILE + '.json" and trashed=false',
-      'fields': 'files(id, name)',
-    });
-
-    request.execute((resp) => {
-      var files = resp.files;
-      if (files && files.length > 0) {
-        this.loadFile(files[0].id);
-      } else {
-        this.createFile();
       }
     });
   };
@@ -54,150 +37,73 @@ class DocumentsService {
     const request = gapi.client.drive.files.create({
       name: this.APP_FOLDER,
       mimeType: 'application/vnd.google-apps.folder',
-      fields: 'id'
+      fields: 'id',
     });
 
-    request.execute((resp) => {
+    request.execute(async resp => {
       if (resp.id) {
         this.appFolderId = resp.id;
-        this.createFile()
+        
+        this.data = await this.loadFileList();
+        this.callback(this.data);
       }
     });
   };
 
-  createFile = () => {
-    const request = gapi.client.drive.files.create({
-      name: this.DOCUMENTS_FILE + '.json',
-      mimeType: 'application/json',
-      fields: 'id',
-      parents: [this.appFolderId]
-    });
-
-    request.execute((resp) => {
-      this.initDocumentsFile(resp.id);
-    });
-  };
-
-  initDocumentsFile = fileId => {
-    const content = {
-      data: {
-        documents: [],
-        tags: [],
-      },
-    };
-
-    const request = gapi.client.request({
-      path: '/upload/drive/v3/files/' + fileId + '?uploadType=media',
-      method: 'PATCH',
-      body: JSON.stringify(content)
-    });
-
-    request.execute(() => {
-      this.loadFile(fileId);
-    });
-  };
-
-  loadFile = (fileId) => {
-    this.documentsFileId = fileId;
-
-    var request = gapi.client.drive.files.get({
-      fileId: this.documentsFileId,
-      alt: 'media'
-    });
-
-    request.execute((resp) => {
-      this.data = resp.data;
-      this.callback(this.data);
-    });
-  };
-
-  updateDocuments = async (documents) => {
+  loadFileList = () => {
     return new Promise((resolve, reject) => {
-      const content = {
-        data: {
-          ...this.data,
-          documents: documents,
-        },
-      };
+      const fields = [
+        'createdTime',
+        'description',
+        'fullFileExtension',
+        'id',
+        'modifiedTime',
+        'name',
+        'properties',
+        'thumbnailLink',
+        'webViewLink',
+      ];
 
-      const request = gapi.client.request({
-        path: '/upload/drive/v3/files/' + this.documentsFileId + '?uploadType=media',
-        method: 'PATCH',
-        body: JSON.stringify(content)
+      const request = gapi.client.drive.files.list({
+        q:  `parents="${this.appFolderId}" and trashed=false`,
+        fields: `files(${fields.join(',')})`,
       });
 
-      request.execute((resp) => {
-        resolve(documents);
+      request.execute(resp => {
+        resolve(resp.files);
       });
     });
   };
 
   saveDocument = async (data, file) => {
-    const { documents } = this.data;
+    const result = await this.uploadFile({data, file});
 
-    const date = new Date();
-    let newDocument = undefined;
-    let updatedDocuments = Immutable(documents).asMutable();
-
-    if (data.id) {
-      newDocument = documents.filter((document) => {
-        return document.id === data.id;
-      });
-
-      newDocument = Immutable(newDocument[0]).asMutable();
-
-      newDocument = {
-        ...newDocument,
-        ...data,
-        modified: date.getTime()
-      };
-
-      updatedDocuments.forEach((document, i) => {
-        if (document.id === data.id) {
-          updatedDocuments[i] = newDocument;
-        }
-      });
-    } else {
-      const id = uuidv4();
-      const fileName = `${id}.jpg`;
-
-      console.log(id)
-
-      const result = await this.uploadFile(file, fileName);
-
-      console.log(result)
-
-      if (result) {
-        newDocument = {
-          id,
-          ...data,
-          created: date.getTime(),
-          modified: date.getTime()
-        };
-
-        updatedDocuments.push(newDocument);
-      }
-    }
-
-    return this.updateDocuments(updatedDocuments);
+    return result;
   };
 
-  createImageData = async (appFolderId, file, fileName) => {
+  createImageData = async ({appFolderId, data, file}) => {
     return new Promise((resolve, reject) => {
       const boundary = '-------314159265358979323846';
-      const delimiter = "\r\n--" + boundary + "\r\n";
-      const close_delim = "\r\n--" + boundary + "--";
+      const delimiter = '\r\n--' + boundary + '\r\n';
+      const close_delim = '\r\n--' + boundary + '--';
 
       const reader = new FileReader();
       reader.readAsDataURL(file);
+
+      const {description, title, type} = data;
+
       reader.onload = () => {
         const contentType = file.type || 'application/octet-stream';
         const metadata = {
-          'name': fileName,
-          'mimeType': contentType,
-          'parents': [appFolderId]
+          description,
+          name: title,
+          mimeType: contentType,
+          parents: [appFolderId],
+          properties: {
+            type,
+          },
         };
-        const data = reader.result;
+        const {result} = reader;
 
         let multipartRequestBody =
           delimiter + 'Content-Type: application/json\r\n\r\n' +
@@ -207,36 +113,40 @@ class DocumentsService {
 
         //Transfer images as base64 string.
         if (contentType.indexOf('image/') === 0) {
-          const pos = data.indexOf('base64,');
+          const pos = result.indexOf('base64,');
           multipartRequestBody += 'Content-Transfer-Encoding: base64\r\n' + '\r\n' +
-            data.slice(pos < 0 ? 0 : (pos + 'base64,'.length));
+          result.slice(pos < 0 ? 0 : (pos + 'base64,'.length));
         } else {
-          multipartRequestBody += + '\r\n' + data;
+          multipartRequestBody += + '\r\n' + result;
         }
         multipartRequestBody += close_delim;
 
         resolve({
           headers: {
-            'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
+            'Content-Type': `multipart/mixed; boundary="${boundary}"`,
           },
-          body: multipartRequestBody
+          body: multipartRequestBody,
         });
       };
     });
   };
 
-  uploadFile = (file, fileName) => {
+  uploadFile = ({data, file}) => {
     return new Promise(async (resolve, reject) => {
-      const data = await this.createImageData(this.appFolderId, file, fileName);
+      const {body, headers} = await this.createImageData({
+        appFolderId: this.appFolderId,
+        file,
+        data,
+      });
 
       const request = gapi.client.request({
-        body: data.body,
-        headers: data.headers,
+        body,
+        headers,
         method: 'POST',
         params: {
-          uploadType: 'multipart'
+          uploadType: 'multipart',
         },
-        path: '/upload/drive/v3/files'
+        path: '/upload/drive/v3/files',
       });
 
       request.execute(file => {
@@ -245,17 +155,7 @@ class DocumentsService {
     });
   };
 
-  deleteProject = document => {
-    const { documents } = this.data;
-
-    let updatedDocuments = Immutable(documents).asMutable();
-
-    updatedDocuments = updatedDocuments.filter(currentDocument => {
-      return currentDocument.id !== document.id;
-    });
-
-    return this.updateDocuments(updatedDocuments);
-  };
+  deleteFile = file => {};
 }
 
 export default new DocumentsService();

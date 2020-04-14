@@ -13,34 +13,55 @@ const Wrapper = styled.div`
 const VIEWS = {
   ADD_DOCUMENT: 'add_document',
   DOCUMENTS: 'documents',
-  DOCUMENT: 'document'
+  DOCUMENT: 'document',
 };
 
-const Router = () => {
+/* let dummyData = [];
+for (let i = 0; i < 15; i++) {
+  dummyData.push({
+    id: `id-${i}`,
+    name: 'My new receipt',
+    description: 'My description',
+    properties: {type: 'statement'},
+    webViewLink: 'https://drive.google.com/file/d/1-rTZN7FSF06HDQcBgk1g6loXp4PE_KHF/view?usp=drivesdk',
+    thumbnailLink: 'https://lh3.googleusercontent.com/o83S2yUrrCBVat61J0TmgXKD_EsiOjP49omI-hd1LCccyExRfMLRy_ml0L5PnhhJWwHpteoAiGY=s220',
+    createdTime: '2020-04-12T22:20:52.890Z',
+    modifiedTime: '2020-04-12T22:20:52.890Z',
+    fullFileExtension: '',
+  });
+} */
+
+const Main = () => {
   const [documents, setDocuments] = useState();
   const [view, setView] = useState(VIEWS.DOCUMENTS);
   const [currentDocumentId, setCurrentDocumentId] = useState(null);
 
-  const onDocumentsInit = result => {
-    setDocuments(result.documents);
+  const onDocumentsInit = files => {
+    setDocuments(files);
   };
 
   useEffect(() => {
     DocumentsService.init(onDocumentsInit);
   }, []);
 
+  const onAddComplete = async () => {
+    setDocuments(undefined);
+    setView(VIEWS.DOCUMENTS);
+    const result = await DocumentsService.loadFileList();
+    setDocuments(result);
+  };
+
   const onAddDocument = () => {
     setCurrentDocumentId(null);
     setView(VIEWS.ADD_DOCUMENT);
   };
 
-  const onCloseAddDocument = () => {
+  const onCloseView = () => {
     setCurrentDocumentId(null);
     setView(VIEWS.DOCUMENTS);
   };
 
   const onViewDocument = id => {
-    console.log(id)
     setCurrentDocumentId(id);
     setView(VIEWS.DOCUMENT);
   };
@@ -62,13 +83,13 @@ const Router = () => {
         />
       )}
       {view === VIEWS.ADD_DOCUMENT && (
-        <AddDocument onClose={onCloseAddDocument} />
+        <AddDocument onAddComplete={onAddComplete} onClose={onCloseView} />
       )}
       {view === VIEWS.DOCUMENT && (
-        <Document document={document} />
+        <Document document={document} onClose={onCloseView} />
       )}
     </Wrapper>
   );
 };
 
-export default Router;
+export default Main;

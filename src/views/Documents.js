@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+import _orderBy from 'lodash/orderBy';
 import styled from 'styled-components';
 
-import ListItem from '../components/ListItem';
-import Loading from '../components/Loading/Loading';
+import {formatISODate} from '../utils/date';
 
-import {formatDate} from '../utils/date';
-import View from '../components/View/View';
 import ActionButton from '../components/ActionButton';
+import ListItem from '../components/ListItem';
+import Loading from '../components/Loading';
+import View, {HEADER_TYPES} from '../components/View';
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  flex-grow: 1;
   padding: 0;
+  position: relative;
   width: 100%;
 `;
 
@@ -31,8 +32,8 @@ const List = styled.ul`
 `;
 
 const Documents = ({documents, onAddDocument, onViewDocument}) => {
+  const [sortBy, setSortBy] = useState('createdTime');
 
-  console.log(documents)
   let content;
   
   if (documents === undefined) {
@@ -42,16 +43,18 @@ const Documents = ({documents, onAddDocument, onViewDocument}) => {
   } else if (documents.length === 0) {
     content = <Empty>No Documents</Empty>;
   } else {
+    const sortedDocuments = _orderBy(documents, [sortBy], ['desc']);
+
     content = (
       <List>
-        {documents.map(document => {
+        {sortedDocuments.map(document => {
           return (
             <ListItem
               key={document.id}
               onClick={() => onViewDocument(document.id)}
-              subTitle={formatDate(document.created)}
-              title={document.title}
-              type={document.type}
+              subTitle={formatISODate(document.createdTime)}
+              title={document.name}
+              type={document.properties.type}
             />
           );
         })}
@@ -74,15 +77,14 @@ const Documents = ({documents, onAddDocument, onViewDocument}) => {
           </svg>
         </ActionButton>
       }
-      maxHeight={250}
-      minHeight={60}
+      defaultHeaderType={HEADER_TYPES.EXPANDED}
       title={'Document'}
     >
       <Wrapper>
         {content}
       </Wrapper>
     </View>
-  )
-}
+  );
+};
 
 export default Documents;

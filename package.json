@@ -9,6 +9,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "date-fns": "^2.12.0",
+    "lodash": "^4.17.15",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-scripts": "3.4.0",
@@ -20,14 +21,49 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build-docs": "react-scripts build",
     "remove-docs": "rimraf docs",
     "rename": "node -e \"require('fs').rename('build', 'docs', function(err) { if (err) console.log(err); console.log('File successfully renamed!') })\"",
-    "postbuild": "npm run remove-docs && npm run rename",
+    "postbuild-docs": "npm run remove-docs && npm run rename",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "comma-dangle": [
+        "warn",
+        {
+          "arrays": "always-multiline",
+          "objects": "always-multiline",
+          "imports": "always-multiline",
+          "exports": "always-multiline",
+          "functions": "never"
+        }
+      ],
+      "indent": [
+        "error",
+        2
+      ],
+      "no-console": [
+        "warn",
+        {
+          "allow": [
+            "info",
+            "warn",
+            "error"
+          ]
+        }
+      ],
+      "semi": [
+        "warn",
+        "always"
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ]
+    }
   },
   "browserslist": {
     "production": [
