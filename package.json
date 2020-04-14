@@ -23,7 +23,7 @@
     "build": "react-scripts build",
     "remove-docs": "rimraf docs",
     "rename": "node -e \"require('fs').rename('build', 'docs', function(err) { if (err) console.log(err); console.log('File successfully renamed!') })\"",
-    "postbuild": "npm run remove-docs && npm run rename",
+    "postbuild-docs": "npm run remove-docs && npm run rename",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
