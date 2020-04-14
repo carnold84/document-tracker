@@ -3,7 +3,6 @@
   "license": "MIT",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://carnold84.github.io/document-tracker",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
