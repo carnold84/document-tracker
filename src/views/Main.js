@@ -16,7 +16,7 @@ const VIEWS = {
   DOCUMENT: 'document',
 };
 
-/* let dummyData = [];
+let dummyData = [];
 for (let i = 0; i < 15; i++) {
   dummyData.push({
     id: `id-${i}`,
@@ -29,7 +29,7 @@ for (let i = 0; i < 15; i++) {
     modifiedTime: '2020-04-12T22:20:52.890Z',
     fullFileExtension: '',
   });
-} */
+}
 
 const Main = () => {
   const [documents, setDocuments] = useState();
@@ -41,7 +41,8 @@ const Main = () => {
   };
 
   useEffect(() => {
-    DocumentsService.init(onDocumentsInit);
+    //DocumentsService.init(onDocumentsInit);
+    setDocuments(dummyData);
   }, []);
 
   const onAddComplete = async () => {

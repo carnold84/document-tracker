@@ -1,4 +1,5 @@
 export default {
+  boxShadow: 'none',
   color1: '#1a1e21',
   color2: '#242a2f',
   color3: '#293238',

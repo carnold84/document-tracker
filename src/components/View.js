@@ -10,9 +10,10 @@ const Wrapper = styled.div`
 
 const Header = styled.header`
   align-items: center;
-  background-color: #E5E1DE;
-  background-image: url("./img/bg_pattern.png");
+  background-color: ${props => props.theme.view.header.bgColor};
+  background-image: ${props => props.theme.view.header.bgImage};
   background-repeat: repeat;
+  box-shadow: ${props => props.theme.view.header.boxShadow};
   display: flex;
   flex-shrink: 0;
   justify-content: space-between;
@@ -33,8 +34,8 @@ const Header = styled.header`
 `;
 
 const HeaderTitle = styled.h2`
-  color: #222222;
-  font-family: ${props => props.theme.fontFamilyPrimary};
+  color: ${props => props.theme.view.header.title.color};
+  font-family: ${props => props.theme.view.header.title.fontFamily};
   font-style: italic;
   font-weight: 400;
   transition: font-size 400ms ease;
