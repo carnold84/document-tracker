@@ -13,9 +13,7 @@
     "react-dom": "^16.13.0",
     "react-scripts": "3.4.0",
     "rimraf": "^3.0.2",
-    "seamless-immutable": "^7.1.4",
-    "styled-components": "^5.1.0",
-    "uuid": "^7.0.2"
+    "styled-components": "^5.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -24,6 +22,7 @@
     "remove-docs": "rimraf docs",
     "rename": "node -e \"require('fs').rename('build', 'docs', function(err) { if (err) console.log(err); console.log('File successfully renamed!') })\"",
     "postbuild-docs": "npm run remove-docs && npm run rename",
+    "serve": "serve build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -75,5 +74,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "serve": "^11.3.0"
   }
 }
