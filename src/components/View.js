@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 const Header = styled.header`
   align-items: center;
   background-color: #E5E1DE;
-  background-image: url("./document-tracker/img/bg_pattern.png");
+  background-image: url("./img/bg_pattern.png");
   background-repeat: repeat;
   display: flex;
   flex-shrink: 0;
