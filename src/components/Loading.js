@@ -62,7 +62,7 @@ const Circle = styled.svg`
   margin: auto;
   position: absolute;
   right: 0;
-  stroke: ${props => props.theme.colorAlt2};
+  stroke: ${props => props.theme.primary1};
   top: 0;
   transform-origin: center center;
   width: 50px;

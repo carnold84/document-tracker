@@ -14,7 +14,7 @@ const FormContainer = styled.div`
 `;
 
 const Preview = styled.div`
-  background-color: ${props => props.theme.color2};
+  background-color: ${props => props.theme.color1};
   border-radius: 5px;
   height: 240px;
   margin: 0 0 20px;
@@ -37,7 +37,7 @@ const Document = ({document, onClose}) => {
 
   return (
     <View
-      controls={
+      controlsLeft={
         <BackButton onClick={onClose} />
       }
     >

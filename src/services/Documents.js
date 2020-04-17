@@ -1,7 +1,7 @@
 const gapi = window.gapi;
 
 class DocumentsService {
-  APP_FOLDER = 'DocumentTracker';
+  APP_FOLDER = 'Squirrel - Document Tracker';
   DOCUMENTS_FILE = 'data';
 
   appFolderId = undefined;
