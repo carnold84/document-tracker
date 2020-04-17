@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
-import theme from './theme2';
+import theme from './themes/light';
 import Main from './views/Main';
 import Auth from './containers/Auth/Auth';
 

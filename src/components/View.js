@@ -58,7 +58,7 @@ const Logo = styled.div`
 
 const LogoFull = styled(Logo)`
   background-image: ${props => props.theme.view.logo.fullImage};
-  height: 66px;
+  height: 60px;
   margin: 0 0 0 -111px;
   width: 222px;
 

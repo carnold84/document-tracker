@@ -48,7 +48,7 @@ export default {
     boxShadow: 'none',
     btn: {
       bgColor: base.color3,
-      border: '1px solid #f1f1f1',
+      border: `1px solid ${base.color2}`,
       color: base.text3,
       _hover: {
         bgColor: base.color3,
