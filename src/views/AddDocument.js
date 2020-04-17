@@ -26,7 +26,7 @@ const Title = styled.h2`
 `;
 
 const Preview = styled.div`
-  background-color: ${props => props.theme.color2};
+  background-color: ${props => props.theme.color1};
   border-radius: 5px;
   height: 240px;
   margin: 0 0 20px;
@@ -153,16 +153,14 @@ const AddDocument = ({onAddComplete, onClose}) => {
   return (
     <form onSubmit={onSubmit}>
       <View
-        controls={
-          <div>
-            <BackButton onClick={onClose} />
-            <ActionButton type={'submit'}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                <path d="M0 0h24v24H0z" fill="none"/>
-                <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
-              </svg>
-            </ActionButton>
-          </div>
+        controlsLeft={<BackButton onClick={onClose} />}
+        controlsRight={
+          <ActionButton type={'submit'}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <path d="M0 0h24v24H0z" fill="none"/>
+              <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+            </svg>
+          </ActionButton>
         }
         defaultHeaderType={HEADER_TYPES.COMPACT}
       >

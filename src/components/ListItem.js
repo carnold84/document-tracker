@@ -4,11 +4,14 @@ import Tag from './Tag';
 
 const Wrapper = styled.li`
   align-items: center;
-  background-color: ${props => props.theme.color2};
-  border-radius: 5px;
-  color: ${props => props.theme.colorAlt1};
+  background-color: ${props => props.theme.listItem.bgColor};
+  border: ${props => props.theme.listItem.border};
+  border-radius: ${props => props.theme.listItem.borderRadius};
+  box-shadow: ${props => props.theme.listItem.boxShadow};
+  color: ${props => props.theme.listItem.color};
   cursor: pointer;
   display: grid;
+  font-family: ${props => props.theme.listItem.fontFamily};
   grid-gap: 20px;
   grid-template-columns: 1fr 100px 30px;
   justify-content: flex-end;
@@ -18,20 +21,19 @@ const Wrapper = styled.li`
 
 const Text = styled.div`
   display: grid;
-  font-family: ${props => props.theme.fontFamilySecondary};
   grid-gap: 7px;
   grid-template-rows: auto auto;
 `;
 
 const Title = styled.h3`
-  color: ${props => props.theme.text1};
+  color: ${props => props.theme.listItem.title.color};
   font-size: 1.2em;
   font-weight: 400;
   margin: 0;
 `;
 
 const SubTitle = styled.p`
-  color: ${props => props.theme.text2};
+  color: ${props => props.theme.listItem.subTitle.color};
   font-size: 1em;
   margin: 0;
 `;
@@ -43,10 +45,11 @@ const TagContainer = styled.div`
 
 const Btn = styled.div`
   align-items: center;
-  background-color: ${props => props.theme.color1};
+  background-color: ${props => props.theme.listItem.btn.bgColor};
+  border: ${props => props.theme.listItem.btn.border};
   border-radius: 15px;
   display: flex;
-  fill: ${props => props.theme.text2};
+  fill: ${props => props.theme.listItem.btn.color};
   height: 30px;
   justify-content: center;
   transition: transform 200ms;
@@ -57,7 +60,7 @@ const Btn = styled.div`
   }
 
   &:hover {
-    background-color: #293238;
+    background-color: ${props => props.theme.listItem.btn._hover.bgColor};
     transform: scale(1.25);
   }
 `;

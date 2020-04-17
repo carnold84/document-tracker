@@ -13,14 +13,14 @@ const RadioButton = styled.div`
 `;
 
 const Label = styled.label`
-  color: ${props => props.theme.text1};
-  font-family: ${props => props.theme.fontFamilySecondary};
+  color: ${props => props.theme.radioGroup.label.color};
+  font-family: ${props => props.theme.radioGroup.label.fontFamily};
   margin: 0 10px 0 0;
 `;
 
 const InputWrapper = styled.div`
   display: flex;
-  fill: ${props => props.theme.text1};
+  fill: ${props => props.theme.radioGroup.radioButton.color};
   margin: 0 5px 0 0;
   position: relative;
 `;
@@ -46,17 +46,17 @@ const RadioGroup = ({ name, onChange, options, value, ...rest }) => {
         return (
           <RadioButton key={element.value}>
             <InputWrapper>
-                {isChecked ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                    <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
-                    <path d="M0 0h24v24H0z" fill="none"/>
-                  </svg>
-                ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
-                    <path d="M0 0h24v24H0z" fill="none"/>
-                  </svg>
-                )}
+              {isChecked ? (
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                  <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
+                  <path d="M0 0h24v24H0z" fill="none"/>
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
+                  <path d="M0 0h24v24H0z" fill="none"/>
+                </svg>
+              )}
               <Input
                 checked={isChecked}
                 id={element.value}

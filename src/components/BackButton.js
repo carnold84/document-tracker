@@ -5,11 +5,11 @@ const Wrapper = styled.button`
   align-items: center;
   background-color: transparent;
   border: none;
-  color: ${props => props.theme.textAlt1};
+  color: ${props => props.theme.backButton.color};
   cursor: pointer;
   display: flex;
-  fill: ${props => props.theme.textAlt1};
-  font-family: ${props => props.theme.fontFamilySecondary};
+  fill: ${props => props.theme.backButton.color};
+  font-family: ${props => props.theme.backButton.fontFamily};
   font-size: 1em;
   padding: 7px 0;
 

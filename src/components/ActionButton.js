@@ -3,13 +3,14 @@ import styled from 'styled-components';
 
 const Wrapper = styled.button`
   align-items: center;
-  background-color: ${props => props.theme.color1};
-  border: 1px solid ${props => props.theme.colorAlt1};
+  background-color: ${props => props.theme.actionButton.bgColor};
+  border: ${props => props.theme.actionButton.border};
   border-radius: 30px;
   bottom: -30px;
+  box-shadow: ${props => props.theme.actionButton.boxShadow};
   cursor: pointer;
   display: flex;
-  fill: ${props => props.theme.colorAlt1};
+  fill: ${props => props.theme.actionButton.color};
   height: 60px;
   justify-content: center;
   position: absolute;
@@ -18,7 +19,7 @@ const Wrapper = styled.button`
   width: 60px;
 
   &:hover {
-    background-color: #293238;
+    background-color: ${props => props.theme.actionButton._hover.bgColor};
     transform: scale(1.1);
   }
 `;

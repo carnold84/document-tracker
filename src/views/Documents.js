@@ -64,7 +64,7 @@ const Documents = ({documents, onAddDocument, onViewDocument}) => {
 
   return (
     <View
-      controls={
+      controlsRight={
         <ActionButton onClick={onAddDocument}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

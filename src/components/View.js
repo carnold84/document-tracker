@@ -16,7 +16,6 @@ const Header = styled.header`
   box-shadow: ${props => props.theme.view.header.boxShadow};
   display: flex;
   flex-shrink: 0;
-  justify-content: space-between;
   padding: 0 20px;
   position: fixed;
   top: 0;
@@ -26,26 +25,49 @@ const Header = styled.header`
 
   .is-expanded & {
     height: 250px;
+    justify-content: center;
   }
 
   .is-compact &, .is-default & {
     height: 60px;
+    justify-content: space-between;
   }
 `;
 
-const HeaderTitle = styled.h2`
-  color: ${props => props.theme.view.header.title.color};
-  font-family: ${props => props.theme.view.header.title.fontFamily};
-  font-style: italic;
-  font-weight: 400;
-  transition: font-size 400ms ease;
+const Logo = styled.div`
+  background-position: center center;
+  background-image: ${props => props.theme.view.logo.image};
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 34px;
+  left: 50%;
+  margin: 0 0 0 -17px;
+  opacity: 0;
+  position: absolute;
+  transition: opacity 200ms;
+  width: 40px;
 
   .is-expanded & {
-    font-size: 2em;
+    opacity: 0;
   }
 
   .is-compact &, .is-default & {
-    font-size: 1.4em;
+    opacity: 1;
+  }
+`;
+
+const LogoFull = styled(Logo)`
+  background-image: ${props => props.theme.view.logo.fullImage};
+  height: 66px;
+  margin: 0 0 0 -111px;
+  width: 222px;
+
+  .is-expanded & {
+    opacity: 1;
+  }
+
+  .is-compact &, .is-default & {
+    opacity: 0;
   }
 `;
 
@@ -57,11 +79,11 @@ const Content = styled.div`
   position: relative;
 
   .is-expanded & {
-    padding: 300px 20px 20px;
+    padding: 290px 20px 20px;
   }
 
   .is-compact &, .is-default & {
-    padding: 100px 20px 20px;
+    padding: 90px 20px 20px;
   }
 `;
 
@@ -72,7 +94,13 @@ export const HEADER_TYPES = {
 
 const TOP_LIMIT = 160;
 
-const View = ({ children, controls, defaultHeaderType = HEADER_TYPES.COMPACT, title }) => {
+const View = ({
+  children,
+  controlsLeft,
+  controlsRight,
+  defaultHeaderType = HEADER_TYPES.COMPACT,
+  title,
+}) => {
   const [headerType, setHeaderType] = useState(defaultHeaderType);
 
   useEffect(() => {
@@ -110,8 +138,10 @@ const View = ({ children, controls, defaultHeaderType = HEADER_TYPES.COMPACT, ti
   return (
     <Wrapper className={classes.join(' ')}>
       <Header>
-        {title && <HeaderTitle>{title}</HeaderTitle>}
-        {controls}
+        {controlsLeft}
+        <Logo />
+        <LogoFull />
+        {controlsRight}
       </Header>
       <Content>
         {children}
