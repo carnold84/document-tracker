@@ -27,7 +27,7 @@ const Text = styled.div`
 
 const Title = styled.h3`
   color: ${props => props.theme.listItem.title.color};
-  font-size: 1.2em;
+  font-size: 1.1em;
   font-weight: 400;
   margin: 0;
 `;
