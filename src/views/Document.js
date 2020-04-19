@@ -7,23 +7,11 @@ import Label from '../components/Label';
 import TextField from '../components/TextField';
 import Textarea from '../components/Textarea';
 import Tag from '../components/Tag';
+import Preview from '../components/Preview';
 
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const Preview = styled.div`
-  background-color: ${props => props.theme.color1};
-  border-radius: 5px;
-  height: 240px;
-  margin: 0 0 20px;
-`;
-
-const PreviewImg = styled.img`
-  height: 100%;
-  object-fit: contain;
-  width: 100%;
 `;
 
 const TagContainer = styled.div`
@@ -49,11 +37,7 @@ const Document = ({document, onClose}) => {
           <Tag>{properties.type}</Tag>
         </TagContainer>
         <Label as="div">Preview</Label>
-        <Preview>
-          <a href={webViewLink} rel={'noopener noreferrer'} target={'_blank'}>
-            <PreviewImg alt={'Preview'} className={'preview-image'} src={thumbnailLink} />
-          </a>
-        </Preview>
+        <Preview link={webViewLink} src={thumbnailLink} />
         <Label htmlFor="description">Description</Label>
         <Textarea
           disabled={true}

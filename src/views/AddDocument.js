@@ -11,6 +11,7 @@ import TextField from '../components/TextField';
 import View, { HEADER_TYPES } from '../components/View';
 import { format } from 'date-fns';
 import Loading from '../components/Loading';
+import Preview from '../components/Preview';
 
 const FormContainer = styled.div`
   display: flex;
@@ -23,19 +24,6 @@ const Title = styled.h2`
   font-style: italic;
   font-weight: 400;
   margin: 0 0 20px;
-`;
-
-const Preview = styled.div`
-  background-color: ${props => props.theme.color1};
-  border-radius: 5px;
-  height: 240px;
-  margin: 0 0 20px;
-`;
-
-const PreviewImg = styled.img`
-  height: 100%;
-  object-fit: contain;
-  width: 100%;
 `;
 
 const FileInputWrapper = styled.div`
@@ -201,11 +189,7 @@ const AddDocument = ({onAddComplete, onClose}) => {
               value={type}
             />
             <Label as="div">Preview</Label>
-            <Preview>
-              {imageUrl && (
-                <PreviewImg alt={'Preview'} className={'preview-image'} src={imageUrl} />
-              )}
-            </Preview>
+            <Preview src={imageUrl} />
             <Label htmlFor="description">Description</Label>
             <Textarea
               id={'description'}
