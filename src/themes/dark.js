@@ -4,11 +4,11 @@ const base = {
   color2: '#242a2f',
   color3: '#293238',
   color4: '#44525c',
-  fontFamilyPrimary: '"Lora", serif',
-  fontFamilySecondary: '"Lato", sans-serif',
-  primary1: '#e5e1De',
+  fontFamilyPrimary: '"Muli", sans-serif',
+  fontFamilySecondary: '"Muli", sans-serif',
+  primary1: '#ebc500',
   primary2: '#848D91',
-  text1: '#e5e1De',
+  text1: '#ffffff',
   text2: '#848D91',
   text3: '#777777',
   textAlt1: '#1a1e21',
@@ -18,10 +18,10 @@ const base = {
 export default {
   ...base,
   actionButton: {
-    bgColor: base.color1,
-    border: `3px solid ${base.primary1}`,
+    bgColor: base.primary1,
+    border: `3px solid ${base.color1}`,
     boxShadow: 'none',
-    color: base.text1,
+    color: base.textAlt1,
     fontFamily: base.fontFamilySecondary,
     _hover: {
       bgColor: base.primary2,
@@ -65,6 +65,9 @@ export default {
       fontFamily: base.fontFamilyPrimary,
     },
   },
+  preview: {
+    bgColor: base.color2,
+  },
   radioGroup: {
     label: {
       color: base.text1,
@@ -102,8 +105,7 @@ export default {
       },
     },
     logo: {
-      fullImage: 'url("./img/logo_full_dark.png")',
-      image: 'url("./img/logo_dark.png")',
+      color: base.text1,
     },
   },
 };

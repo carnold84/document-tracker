@@ -4,9 +4,9 @@ const base = {
   color2: '#f3f3f3',
   color3: '#e7e7e7',
   color4: '#dfdfdf',
-  fontFamilyPrimary: '"Ubuntu", sans-serif',
-  fontFamilySecondary: '"Ubuntu", sans-serif',
-  primary1: '#9949E7',
+  fontFamilyPrimary: '"Muli", sans-serif',
+  fontFamilySecondary: '"Muli", sans-serif',
+  primary1: '#ebc500',
   primary2: '#ecd448',
   text1: '#333333',
   text2: '#555555',
@@ -20,14 +20,14 @@ export default {
     bgColor: base.primary1,
     border: `3px solid ${base.color2}`,
     boxShadow: 'none',
-    color: base.textAlt1,
+    color: base.text1,
     fontFamily: base.fontFamilySecondary,
     _hover: {
       bgColor: base.primary2,
     },
   },
   backButton: {
-    color: base.textAlt1,
+    color: base.text1,
     fontFamily: base.fontFamilySecondary,
     _hover: {
       bgColor: base.primary2,
@@ -64,6 +64,9 @@ export default {
       fontFamily: base.fontFamilyPrimary,
     },
   },
+  preview: {
+    bgColor: base.color1,
+  },
   radioGroup: {
     label: {
       color: base.text1,
@@ -92,7 +95,7 @@ export default {
   view: {
     header: {
       bgColor: base.primary1,
-      bgImage: 'url("./img/bg_pattern2.png")',
+      bgImage: 'url("./img/bg_pattern.png")',
       boxShadow: base.boxShadow,
       color: base.text1,
       title: {
@@ -101,8 +104,7 @@ export default {
       },
     },
     logo: {
-      fullImage: 'url("./img/logo_full.png")',
-      image: 'url("./img/logo.png")',
+      color: base.color1,
     },
   },
 };
